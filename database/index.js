@@ -1,41 +1,4 @@
-// I used the following code to directly import the data to mongoDB
-// mongoimport --jsonArray --db welp --collection photos --drop --file ~/Downloads/photoData.json
-
-
-// Schema for the dataset can be showed as below.
-
-
-// Schema({
-//     photoId: Number,
-//     photoUrl: String,
-//     id: Number,
-//     date: Date,
-//     userId: Number,
-//     userName: String,
-//     userFollowers: Number,
-//     userReviews: Number,
-// })
-
-const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/welp');
-// const redisClient = require('redis').createClient;
-
-// const redis = redisClient(6379, 'localhost');
-
-var Schema = mongoose.Schema;
-
-var photoSchema = new Schema({
-    photoId: Number,
-    photoUrl: String,
-    id: Number,
-    date: Date,
-    userId: Number,
-    userName: String,
-    userFollowers: Number,
-    userReviews: Number,
-})
-
-var Photo = mongoose.model('Photo', photoSchema);
+const pg = require('pg');
 
 module.exports.getById = (redis, businessId, callback) => {
   redis.get(businessId, (error, reply) => {
@@ -44,51 +7,35 @@ module.exports.getById = (redis, businessId, callback) => {
     } else if (reply) {
       callback(JSON.parse(reply));
     } else {
-      Photo.find({ id: businessId }, (err, results) => {
+      const connectionString = process.env.DATABASE_URL || 'postgres://postgres:student@localhost:5432/kelp';
+      const results = [];
+      // Get a Postgres client from the connection pool
+      pg.connect(connectionString, (err, client, done) => {
+        // Handle connection errors
         if (err) {
-          //callback(err, null);
-          console.log(err)
-        } else {
-          redis.set(businessId, JSON.stringify(results), () => {
-            callback(results);
-          });
+          console.log(err);
         }
+        // SQL Query > Select Data
+        const query = client.query('SELECT * FROM photosView where id=($1) ORDER BY id ASC;', [businessId]);
+        // Stream results back one row at a time
+        query.on('row', (row) => {
+          let result = {
+            photoId: row.photoid,
+            photoUrl: row.photourl,
+            id: row.id,
+            date: row.photodate,
+            userId: row.userid,
+            userName: row.username,
+            userFollowers: row.userfollowers,
+            userReviews: row.userreviews,
+          };
+          results.push(result);
+        });
+        // After all data is returned, close connection and return results
+        query.on('end', () => {
+          callback(results);
+        });
       });
     }
   });
-};
-
-// without redis
-// module.exports.getById = (redis, businessId, callback) => {
-//     Photo.find({id:businessId}, (error, results) => {
-//         if (error) {
-//             callback(error, null)
-//         } else {
-//             callback(null, results)
-//         }
-//     })
-// }
-
-// module.exports.postItem = (params, callback) => {
-//     let query = {
-//         item: params[0],
-//         quantity: params[1]
-//     }
-
-//     let individualItem = new Grocery(query);
-//     individualItem.save((error, results) => {
-//         if (error) {
-//             callback(error, null)
-//         } else {
-//             callback(null, results)
-//         }
-//     })
-// }
-
-// module.exports.getAll(5, (error,results)=> {
-//     if (error) {
-//         console.log('error')
-//     } else {
-//         console.log(results)
-//     }
-// })
+}
