@@ -33,7 +33,8 @@ if (cluster.isMaster) {
   expstate.extend(app);
   app.set('state namespace', 'PhotoGallery');
 
-  const redis = redisClient(6379, 'localhost');
+  //const redis = redisClient(6379, 'localhost');
+  const redis = redisClient('redis://cache:6379');
 
   app.use(bodyParser.json());
   /*
@@ -87,5 +88,5 @@ if (cluster.isMaster) {
 
   app.use(express.static(path.join(__dirname, '../client/public')));
 
-  app.listen(3003, () => console.log("I am listening to Dylan's Channel: localhost:3003"));
+  app.listen(3004, () => console.log("I am listening to Dylan's Channel: localhost:3004"));
 }

@@ -1,0 +1,16 @@
+version: '2'
+
+services:
+  kelp-photos:
+    image: gregoryew/kelpphotos:latest
+    depends_on:
+      - 'database'
+      - 'cache'
+    ports:
+      - '80:3004'
+
+  database:
+    image: postgres:alpine
+
+  cache:
+    image: redis:latest
