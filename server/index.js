@@ -33,8 +33,8 @@ if (cluster.isMaster) {
   expstate.extend(app);
   app.set('state namespace', 'PhotoGallery');
 
-  //const redis = redisClient(6379, 'localhost');
-  const redis = redisClient('redis://cache:6379');
+  const redis = redisClient(6379, 'localhost');
+  //const redis = redisClient('redis://cache:6379');
 
   app.use(bodyParser.json());
   /*
