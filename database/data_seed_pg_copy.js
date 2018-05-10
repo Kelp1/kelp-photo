@@ -33,7 +33,7 @@ for (let i = 0; i < 1000; i += 1) {
 			id2,
 			Math.floor(Math.random() * 10000) + 1,
     	id,
-    	`https://s3.us-east-2.amazonaws.com/hrsf93photos/pic${Math.floor(Math.random() * 1000)}.png`,
+    	`https://s3.us-east-2.amazonaws.com/hrsf93photos/pic${Math.floor(Math.random() * 1000) + 1}.png`,
     	moment(faker.date.past()).format('MM/DD/YYYY h:mm:ss a')
   	  ];
   	  lines.push(photoSchema.join('|'));
