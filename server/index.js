@@ -50,7 +50,7 @@ if (cluster.isMaster) {
       res.json(results);
     });
   });
-
+/*
   app.get('/', (req, res) => {
     
     // Render the component to a string using the initialState. 
@@ -79,13 +79,12 @@ if (cluster.isMaster) {
       appString: appString,
       initialState: initialState }, 
       function(err, html) {
-        console.log(err);
-        console.log(html);
-        res.send(html)
+        if (err) {res.status(500)}
+        else {res.send(html)}
       }
     );
 });
-
+*/
   app.use(express.static(path.join(__dirname, '../client/public')));
 
   app.listen(3004, () => console.log("I am listening to Dylan's Channel: localhost:3004"));
