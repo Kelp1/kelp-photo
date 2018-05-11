@@ -2,18 +2,9 @@ var path = require('path');
 var SRC_DIR = path.join(__dirname, '/client/src');
 var DIST_DIR = path.join(__dirname, '/client/public');
 
-console.log('webpack');
-
-module.exports = {
+const common = {
   //entry: `${SRC_DIR}/components/PhotoGallery.jsx`,
-  entry: `${SRC_DIR}/app-client.js`,
-  output: {
-    filename: 'bundle.js',
-    path: DIST_DIR,
-    libraryTarget: 'var',
-    // `library` determines the name of the global variable
-    library: 'PhotoGallery',
-  },
+  context : path.join(__dirname, '/client/src/components'),
   module : {
     loaders : [
       {
@@ -30,3 +21,24 @@ module.exports = {
     extensions: ['.js', '.jsx'],
   },
 };
+
+const client = {
+  entry: './client.js',
+  output: {
+    path: path.join(__dirname, '/client/public'),
+    filename: 'app.js',
+  }
+}
+
+const server = {
+  entry: './server.js',
+  output: {
+    path: path.join(__dirname, '/client/public'),
+    filename: 'app-server.js',
+  }
+}
+
+module.exports = [
+  Object.assign({}, common, client),
+  Object.assign({}, common, server),
+]

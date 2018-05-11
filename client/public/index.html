@@ -8,13 +8,19 @@
     <!-- <script src="./lightbox-plus-jquery.js" type = "text/javascript"></script> -->
     <link href="./css/style.css" rel="stylesheet">
     <link href="./css/lightbox.css" rel="stylesheet">
+    <script src='app.js'></script>
+    <script src="./lightbox-plus-jquery.js" type="text/javascript"></script>
 </head>
 
 <body id='photogallerymodule'>
     <div id='Photos'>
     </div>
-    <script src='bundle.js'></script>
-    <script src="./lightbox-plus-jquery.js" type="text/javascript"></script>
+    <script>
+        ReactDOM.render(
+            React.createElement(PhotoGallery),
+            document.getElementById('Photos')
+        );
+    </script>
 </body>
 
 </html>
