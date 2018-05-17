@@ -35,6 +35,7 @@ const server = {
   output: {
     path: path.join(__dirname, '/client/public'),
     filename: 'app-server.js',
+    libraryTarget: 'commonjs-module',
   }
 }
 

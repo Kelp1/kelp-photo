@@ -14,29 +14,29 @@ if (cluster.isMaster) {
   const express = require('express');
   const cors = require('cors');
   const app = express();
-  const bodyParser = require('body-parser');
+  //const bodyParser = require('body-parser');
   const path = require('path');
   const db = require('../database/index.js');
-  const { renderToString } = require('react-dom/server');
-  const React = require('react');
-  const PhotoGallery = require('../babel_views/components/PhotoGallery.jsx').default;
+  //const { renderToString } = require('react-dom/server');
+  //const React = require('react');
+  //const PhotoGallery = require('../babel_views/components/PhotoGallery.jsx').default;
   const redisClient = require('redis').createClient;
-  const expstate = require('express-state');
-  const ReactDOMServer = require('react-dom/server');
-  const ReactDOM = require('react-dom');
-  const exphbs = require('express-handlebars');
-  const $ = require('jquery');
+  //const expstate = require('express-state');
+  //const ReactDOMServer = require('react-dom/server');
+  //const ReactDOM = require('react-dom');
+  //const exphbs = require('express-handlebars');
+  //const $ = require('jquery');
 
-  app.engine('handlebars', exphbs({defaultLayout: 'PhotoGallery'}));
-  app.set('view engine', 'handlebars');
+  //app.engine('handlebars', exphbs({defaultLayout: 'PhotoGallery'}));
+  //app.set('view engine', 'handlebars');
 
-  expstate.extend(app);
-  app.set('state namespace', 'PhotoGallery');
+  //expstate.extend(app);
+  //app.set('state namespace', 'PhotoGallery');
 
-  const redis = redisClient(6379, 'localhost');
-  //const redis = redisClient('redis://cache:6379');
+  //const redis = redisClient(6379, 'localhost');
+  const redis = redisClient('redis://cache:6379');
 
-  app.use(bodyParser.json());
+  //app.use(bodyParser.json());
   /*
   app.use((req, res, next) => {
     console.log(req.url, req.method);
@@ -87,5 +87,5 @@ if (cluster.isMaster) {
 */
   app.use(express.static(path.join(__dirname, '../client/public')));
 
-  app.listen(3004, () => console.log("I am listening to Dylan's Channel: localhost:3004"));
+  app.listen(3000, () => console.log("I am listening to Dylan's Channel testing2: localhost:3000"));
 }
